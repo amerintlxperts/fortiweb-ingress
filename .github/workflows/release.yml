@@ -5,6 +5,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+concurrency:
+  group: helm-chart-publish-${{ github.repository }}
+  cancel-in-progress: true 
 
 jobs:
   release:
