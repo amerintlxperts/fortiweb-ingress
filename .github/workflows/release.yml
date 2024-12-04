@@ -1,3 +1,4 @@
+---
 name: Release Charts
 
 on:
@@ -7,8 +8,6 @@ on:
 
 jobs:
   release:
-    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
-    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -28,7 +27,18 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Package Helm Chart
+        run: |
+          mkdir -p packaged-charts
+          helm package charts/* --destination packaged-charts
+
+      - name: Update Helm Repository Index
+        run: |
+          helm repo index packaged-charts --url https://<your-username>.github.io/<your-repo-name>
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: packaged-charts
+          publish_branch: gh-pages
