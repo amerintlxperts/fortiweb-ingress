@@ -27,18 +27,22 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Package Helm Chart
+      - name: Create Helm Chart Package
         run: |
-          mkdir -p packaged-charts
-          helm package charts/* --destination packaged-charts
+          mkdir -p docs
+          helm lint charts
+          helm package charts -d docs
+          helm repo index docs --url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
 
-      - name: Update Helm Repository Index
+      - name: Configure Git for Pages
         run: |
-          helm repo index packaged-charts --url https://<your-username>.github.io/<your-repo-name>
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: packaged-charts
-          publish_branch: gh-pages
+      - name: Publish to GitHub Pages
+        run: |
+          git checkout -b gh-pages || git switch gh-pages
+          mv docs/* .
+          git add .
+          git commit -m "Update Helm Chart at $(date)"
+          git push origin gh-pages
