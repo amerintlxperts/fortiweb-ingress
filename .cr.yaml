@@ -1,0 +1,7 @@
+owner: amerintlxperts
+git-repo: fortiweb-ingress
+charts-repo: https://amerintlxperts.github.io/fortiweb-ingress
+package-path: .cr-release-packages
+index-path: .cr-index/index.yaml
+pages-branch: gh-pages
+commit: fwb-k8s-ctrl-2.0.1
