@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
 
@@ -32,22 +32,9 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Create Helm Chart Package
-        run: |
-          mkdir -p docs
-          helm lint charts
-          helm package charts -d docs
-          helm repo index docs --url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
-
-      - name: Configure Git for Pages
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-
-      - name: Publish to GitHub Pages
-        run: |
-          git checkout -b gh-pages || git switch gh-pages
-          mv docs/* .
-          git add .
-          git commit -m "Update Helm Chart at $(date)"
-          git push origin gh-pages
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@0102fa30dd78df0d0f8093c4607e6080972ff82d
+        with:
+          charts_dir: charts/fwb-k8s-ctrl-2.0.1
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
