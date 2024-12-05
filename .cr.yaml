@@ -1,6 +1,0 @@
-owner: amerintlxperts
-git-repo: fortiweb-ingress
-package-path: docs
-index-path: docs/index.yaml
-pages-branch: gh-pages
-commit: fwb-k8s-ctrl-2.0.1
