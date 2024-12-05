@@ -38,7 +38,6 @@ jobs:
           charts_dir: charts/
           packages_with_index: true
           mark_as_latest: true
-          config: .cr.yaml
         env:
           CR_PACKAGE_PATH: docs
           CR_TOKEN: "${{ secrets.PAT }}"
