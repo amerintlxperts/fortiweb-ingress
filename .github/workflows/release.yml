@@ -9,7 +9,7 @@ on:
 
 concurrency:
   group: helm-chart-publish-${{ github.repository }}
-  cancel-in-progress: true 
+  cancel-in-progress: true
 
 jobs:
   release:
@@ -35,7 +35,9 @@ jobs:
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         with:
-          charts_dir: charts/fwb-k8s-ctrl-2.0.1
+          charts_dir: charts/
           packages_with_index: true
+          mark_as_latest: true
         env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_PACKAGE_PATH: docs
+          CR_TOKEN: "${{ secrets.PAT }}"
