@@ -4,9 +4,9 @@
 # Declare variables to be passed into your templates.
 # FortiWEB Ingress Controller image from Dockerhub.com
 image:
-  repository: fortinet/fortiweb-ingress
+  repository: ghcr.io/amerintlxperts/fortiweb-ingress
   pullPolicy: IfNotPresent
-  tag: "2.0.0"
+  tag: "2.0.1"
 
 nameOverride: ""
 fullnameOverride: ""
