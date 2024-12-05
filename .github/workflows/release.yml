@@ -9,7 +9,7 @@ on:
 
 concurrency:
   group: helm-chart-publish-${{ github.repository }}
-  cancel-in-progress: true 
+  cancel-in-progress: true
 
 jobs:
   release:
@@ -38,7 +38,6 @@ jobs:
           charts_dir: charts/
           packages_with_index: true
           mark_as_latest: true
-          docs
           config: .cr.yaml
         env:
           CR_TOKEN: "${{ secrets.PAT }}"
